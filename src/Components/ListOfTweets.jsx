@@ -5,19 +5,19 @@ function ListOfTweets(props) {
     const { tweets } = props;
     return (
         <div>
-            {tweets.map((el) => <div style={{ marginTop: "20px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <div className="p-3 my-2 rounded bg-dark" style={{ width: "50%" }}>
-                    <Toast key={el.id}>
+            {tweets.map((el, index) => <div style={{ marginTop: "20px", display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <div key={index} className="p-3 my-2 rounded bg-dark" style={{ width: "50%" }}>
+                    <Toast>
                         <ToastHeader style={{ color: 'gray', textAlign: 'right', position: 'relative' }}>
                             <span style={{ position: 'absolute', left: 0 }}>
-                                {el.name}
+                                {el.userName}
                             </span>
                             <span>
                                 {el.date}
                             </span>
                         </ToastHeader>
                         <ToastBody style={{ color: 'white', textAlign: 'left', marginTop: '20px' }}>
-                            {el.message}
+                            {el.content}
                         </ToastBody>
                     </Toast>
                 </div>

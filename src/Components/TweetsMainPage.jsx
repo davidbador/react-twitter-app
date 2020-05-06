@@ -1,32 +1,32 @@
 import React from 'react';
 import CreateTweet from './CreateTweet';
 import ListOfTweets from './ListOfTweets';
+import { getTweets } from '../lib/Api';
 
 class TweetsMainPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            tweets: []
+            tweets: [],
         }
     }
 
     componentDidMount = () => {
-        const saves = localStorage.getItem('tweets');
-        const tweets = JSON.parse(saves);
-        if (saves) {
-            this.setState(() => ({ tweets }))
-        }
+        this.loadTweets();
     }
 
-    componentDidUpdate = (prevProps, prevState) => {
-        if (prevState.tweets.length !== this.state.tweets.length) {
-            const saves = JSON.stringify(this.state.tweets);
-            localStorage.setItem('tweets', saves);
-        }
+    loadTweets = async () => {
+        const response = await getTweets();
+        this.setState(
+            {
+                tweets: response.data.tweets
+            }
+        )
     }
 
     handleOnTweetSubmit = (value) => {
         this.setState({ tweets: [value, ...this.state.tweets] })
+        this.loadTweets()
     }
 
     render() {
