@@ -15,7 +15,6 @@ class TweetsMainPage extends React.Component {
         const tweets = JSON.parse(saves);
         if (saves) {
             this.setState(() => ({ tweets }))
-            console.log(saves);
         }
     }
 
