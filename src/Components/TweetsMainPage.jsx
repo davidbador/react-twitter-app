@@ -1,8 +1,8 @@
 import React from 'react';
 import CreateTweet from './CreateTweet';
-import TweetField from './TweetField';
+import ListOfTweets from './ListOfTweets';
 
-class TweetsList extends React.Component {
+class TweetsMainPage extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -34,10 +34,10 @@ class TweetsList extends React.Component {
         return (
             <div>
                 <CreateTweet handleTweetSubmit={value => this.handleOnTweetSubmit(value)} />
-                <TweetField tweets={this.state.tweets} />
+                <ListOfTweets tweets={this.state.tweets} />
             </div>
         )
     }
 }
 
-export default TweetsList
+export default TweetsMainPage

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Toast, ToastHeader, ToastBody } from 'reactstrap';
 
-function TweetField(props) {
+function ListOfTweets(props) {
     const { tweets } = props;
     return (
         <div>
@@ -26,4 +26,4 @@ function TweetField(props) {
     )
 }
 
-export default TweetField
+export default ListOfTweets

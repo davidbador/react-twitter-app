@@ -11,7 +11,6 @@ class CreateTweet extends React.Component {
             id: 0,
         }
         this.button = React.createRef();
-        this.alert = React.createRef();
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -42,7 +41,7 @@ class CreateTweet extends React.Component {
                     <FormGroup style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                         <div style={{ position: 'relative', width: '50%' }}>
                             <Input type="textarea" name="text" id="tweetTextArea" value={this.state.value} style={{ background: 'black', color: 'white', height: '30vh', resize: "none" }} placeholder="What do you have in mind..." onChange={event => this.setState({ value: event.target.value })} />
-                            <Alert color="danger" innerRef={alert => { this.alert = alert }} style={{ position: 'absolute', bottom: 0, left: '1%', display: this.state.showAlert ? "block": "none" }}>The tweet can't contain more than 140 chars.</Alert>
+                            <Alert color="danger" style={{ position: 'absolute', bottom: 0, left: '1%', display: this.state.showAlert ? "block": "none" }}>The tweet can't contain more than 140 chars.</Alert>
                             <Button type="submit" color="primary" innerRef={button => { this.button = button }} style={{ position: 'absolute', bottom: '7%', right: '1%' }}>Tweet</Button>
                         </div>
                     </FormGroup>

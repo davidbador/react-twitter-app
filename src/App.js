@@ -1,11 +1,11 @@
 import React from 'react';
-import TweetsList from './Components/TweetsList';
+import TweetsMainPage from './Components/TweetsMainPage';
 import './App.css';
 
 function App() {
   return (
     <div className="App">
-      <TweetsList />
+      <TweetsMainPage />
     </div>
   );
 }
