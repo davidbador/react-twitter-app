@@ -6,8 +6,10 @@ import { getTweets } from '../lib/Api';
 class TweetsMainPage extends React.Component {
     constructor(props) {
         super(props);
+        const { currentUserName } = props
         this.state = {
             tweets: [],
+            name: currentUserName
         }
     }
 
@@ -32,7 +34,7 @@ class TweetsMainPage extends React.Component {
     render() {
         return (
             <div>
-                <CreateTweet handleTweetSubmit={value => this.handleOnTweetSubmit(value)} />
+                <CreateTweet currentUserName={this.state.name} handleTweetSubmit={value => this.handleOnTweetSubmit(value)}  />
                 <ListOfTweets tweets={this.state.tweets} />
             </div>
         )

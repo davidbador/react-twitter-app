@@ -7,9 +7,10 @@ import LoadingIndicator from './LoadingIndicator';
 class CreateTweet extends React.Component {
     constructor(props) {
         super(props);
+        const { currentUserName } = props
         this.state = {
             value: '',
-            name: 'david',
+            userName: currentUserName,
             showLoading: false,
         }
         this.button = React.createRef();
@@ -24,7 +25,7 @@ class CreateTweet extends React.Component {
 
     handleSubmit = async (event) => {
         event.preventDefault();
-        const { value, name } = this.state
+        const { value, name, userName } = this.state
         if (this.state.value.length === 0) {
             this.button.setAttribute('disabled', 'disabled');
         } else if (this.state.value.length < 140) {
