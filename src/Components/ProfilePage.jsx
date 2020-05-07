@@ -36,7 +36,7 @@ class ProfilePage extends React.Component {
                             Profile
                         </div>
                         <div style={{ textAlign: 'left', color: 'white' }}>User Name</div>
-                        <Input type="text" value={this.state.value} style={{ width: '700px' }} onChange={this.updateUserName} />
+                        <Input type="text" value={this.state.value} style={{ width: '700px', background: 'black', color: 'white' }} onChange={this.updateUserName} />
                         <Button type="submit" style={{ position: "absolute", right: 0 }} color="primary" innerRef={button => { this.button = button }}>Save</Button>
                     </FormGroup>
                 </Form>
