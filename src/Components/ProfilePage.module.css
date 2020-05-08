@@ -1,0 +1,14 @@
+.profilePageWrapper {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+.profilePageTitle {
+    color: white;
+    font-size: 200%;
+    text-align: left;
+    margin-bottom: 5%
+}

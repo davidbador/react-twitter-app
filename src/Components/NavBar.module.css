@@ -1,0 +1,9 @@
+.navBarWrapper {
+    display: flex;
+    align-items: center; 
+    justify-content: center
+}
+
+.navBar {
+    width: 70%;
+}

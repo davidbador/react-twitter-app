@@ -1,12 +1,12 @@
 import React from 'react';
 import { Navbar, Nav, NavItem } from 'reactstrap';
 import { NavLink } from 'react-router-dom';
-import '../App.css'
+import styles from './NavBar.module.css';
 
 function NavBar() {
     return (
-        <div style={{ display:'flex', alignItems: 'center', justifyContent: 'center'}}>
-            <Navbar color="dark" dark expand="md" className='navbar' style={{ width: '70%' }}>
+        <div className={styles.navBarWrapper}>
+            <Navbar color="dark" dark expand="md" className={styles.navBar}>
                 <Nav>
                     <NavItem>
                         <NavLink exact activeClassName="active" to="/">Home</NavLink>

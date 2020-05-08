@@ -9,13 +9,28 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      userName: 'david',
+      userName: 'David',
     }
     this.currentUserName = this.currentUserName.bind(this)
   }
 
+  componentWillMount() {
+    const savedName = localStorage.getItem('savedName');
+    const heldName = JSON.parse(savedName);
+    if (savedName) {
+      this.setState(() => ({ userName: heldName }))
+    } else {
+      this.setState(() => ({ userName: this.state.userName }))
+    }
+  }
+
+  componentDidUpdate() {
+    const local = this.state.userName;
+    localStorage.setItem('savedName', JSON.stringify(local))
+  }
+
   currentUserName = (newName) => {
-    this.setState({ userName: newName })
+    this.setState({ userName: newName });
   }
 
   render() {
@@ -28,7 +43,7 @@ class App extends React.Component {
               <TweetsMainPage currentUserName={this.state.userName} />
             </Route>
             <Route path="/profile" exact>
-              <ProfilePage updatedUserName={this.currentUserName} />
+              <ProfilePage currentUserName={this.state.userName} updatedUserName={this.currentUserName} />
             </Route>
           </Switch>
         </BrowserRouter>
