@@ -1,4 +1,29 @@
+.tweetFormGroup {
+    display: flex;
+    align-items: center;
+    justify-content: center
+}
+
 .tweetForm {
     position: relative;
     width: 50%
+}
+
+.tweetFormInput {
+    background: black!important;
+    color: white!important;
+    height: 30vh;
+    resize: none
+}
+
+.tweetFormAlert {
+    position: absolute;
+    bottom: 0;
+    left: 1%;
+}
+
+.tweetFormButton {
+    position: absolute;
+    bottom: 7%;
+    right: 1%
 }

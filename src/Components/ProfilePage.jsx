@@ -12,7 +12,6 @@ class ProfilePage extends React.Component {
             showModal: false,
             value: ''
         }
-        this.button = React.createRef();
         this.updateUserName = this.updateUserName.bind(this);
         this.handleModalShow = this.handleModalShow.bind(this);
         this.handleModalClose = this.handleModalClose.bind(this);
@@ -43,9 +42,9 @@ class ProfilePage extends React.Component {
     render() {
         return (
             <AppContext.Consumer>
-                { appContext => (
+                {appContext => (
                     <div className={styles.profilePageWrapper} >
-                        <Form style={{ position: 'relative' }} onSubmit={(event) => this.submitUserName(event, appContext.currentUserName)}>
+                        <Form className={styles.profilePageForm} onSubmit={(event) => this.submitUserName(event, appContext.currentUserName)}>
                             <FormGroup>
                                 <div className={styles.profilePageTitle}>Profile</div>
                                 <Modal show={this.state.showModal} onHide={this.handleModalClose} animation={false}>
@@ -57,9 +56,9 @@ class ProfilePage extends React.Component {
                                         <Button variant="primary" onClick={this.handleModalClose}>Close</Button>
                                     </Modal.Footer>
                                 </Modal>
-                                <div className={styles.profilePage}>User Name</div>
-                                <Input value={this.state.value} type="text" style={{ width: '700px', background: 'black', color: 'white' }} onChange={this.updateUserName} />
-                                <Button type="submit" style={{ position: "absolute", right: 0 }} color="primary" innerRef={button => { this.button = button }}>Save</Button>
+                                <div className={styles.profilePageUserNameTitle}>User Name</div>
+                                <Input value={this.state.value} type="text" className={styles.profilePageInput} onChange={this.updateUserName} />
+                                <Button type="submit" className={styles.profilePageButton} color="primary">Save</Button>
                             </FormGroup>
                         </Form>
                     </div>

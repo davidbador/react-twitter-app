@@ -7,8 +7,27 @@
 }
 
 .profilePageTitle {
-    color: white;
-    font-size: 200%;
-    text-align: left;
-    margin-bottom: 5%
+  color: white;
+  font-size: 200%;
+  text-align: left;
+  margin-bottom: 5%;
+}
+
+.profilePageUserNameTitle {
+  text-align: left;
+}
+
+.profilePageForm {
+  position: relative;
+}
+
+.profilePageInput {
+  width: 700px;
+  background-color: black !important;
+  color: white !important;
+}
+
+.profilePageButton {
+  position: absolute;
+  right: 0;
 }

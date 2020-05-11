@@ -6,7 +6,7 @@ import NavBar from './Components/NavBar';
 import './App.css';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 import AppContext from './AppContext';
-import { getTweets } from './lib/Api';
+import { getTweetsFirestore } from './lib/FirestoreConnection';
 
 class App extends React.Component {
   constructor(props) {
@@ -42,10 +42,11 @@ class App extends React.Component {
   }
 
   loadTweets = async () => {
-    const response = await getTweets();
+    const response = await getTweetsFirestore()
+    const data = response.docs.map(doc => doc.data());
     this.setState(
       {
-        tweets: response.data.tweets
+        tweets: data
       }
     )
   }
@@ -72,7 +73,9 @@ class App extends React.Component {
             <Route path="/profile" exact>
               <AppContext.Provider value={{
                 userName: this.state.userName,
-                currentUserName: (newName) => this.setState({ userName: newName })
+                currentUserName: (newName) => {
+                  this.setState({ userName: newName })
+                }
               }}>
                 <ProfilePage />
               </AppContext.Provider>

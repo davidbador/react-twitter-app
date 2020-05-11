@@ -5,7 +5,19 @@
   justify-content: center;
 }
 
+.toastHeader {
+  color: gray;
+  text-align: right;
+  position: relative;
+}
+
+.toastBody {
+  color: white;
+  text-align: left;
+  margin-top: 20px;
+}
+
 .tweetName {
-    position: absolute;
-    left: 0
+  position: absolute;
+  left: 0;
 }

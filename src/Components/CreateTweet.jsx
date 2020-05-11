@@ -4,8 +4,8 @@ import { Modal } from 'react-bootstrap';
 import '../App.css';
 import styles from './CreateTweet.module.css';
 import AppContext from '../AppContext';
-import { sendTweet } from '../lib/Api';
 import LoadingIndicator from './LoadingIndicator';
+import { sendTweetFirestore } from '../lib/FirestoreConnection'
 
 class CreateTweet extends React.Component {
     constructor(props) {
@@ -55,17 +55,13 @@ class CreateTweet extends React.Component {
     handleOnSubmit = async (event, fc) => {
         event.preventDefault();
         const { value } = this.state;
-        let response = await sendTweet(
-            {
-                tweet: {
-                    content: value,
-                    userName: this.context.userName,
-                    date: new Date().toISOString()
-                }
-            }, this.turnOffLoader, this.displayError
-        );
+        const userRef = sendTweetFirestore({
+            content: value,
+            userName: this.context.userName,
+            date: new Date().toISOString()
+        }, this.turnOffLoader, this.displayError)
         this.setState({ showLoading: true, value: '' });
-        setTimeout(() => fc(response), 1000)
+        setTimeout(() => fc(userRef), 1000)
     }
 
     render() {
@@ -74,9 +70,9 @@ class CreateTweet extends React.Component {
                 {appContext => (
                     <div>
                         <Form onSubmit={(event) => this.handleOnSubmit(event, appContext.handleOnTweetSubmit)}>
-                            <FormGroup style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                            <FormGroup className={styles.tweetFormGroup}>
                                 <div className={styles.tweetForm}>
-                                    <Input type="textarea" name="text" id="tweetTextArea" value={this.state.value} style={{ background: 'black', color: 'white', height: '30vh', resize: "none" }} placeholder="What do you have in mind..." onChange={this.updateText} />
+                                    <Input type="textarea" name="text" id="tweetTextArea" value={this.state.value} className={styles.tweetFormInput} placeholder="What do you have in mind..." onChange={this.updateText} />
                                     <Modal show={this.state.showModal} onHide={this.handleModalClose} animation={false}>
                                         <Modal.Header closeButton>
                                             <Modal.Title>ERROR!</Modal.Title>
@@ -88,8 +84,8 @@ class CreateTweet extends React.Component {
                                             </Button>
                                         </Modal.Footer>
                                     </Modal>
-                                    <Alert color="danger" style={{ position: 'absolute', bottom: 0, left: '1%', display: this.state.showAlert ? "block" : "none" }}>The tweet can't contain more than 140 chars.</Alert>
-                                    <Button type="submit" color="primary" disabled={this.state.buttonDisabled} style={{ position: 'absolute', bottom: '7%', right: '1%' }}>Tweet</Button>
+                                    <Alert color="danger" className={styles.tweetFormAlert} style={{ display: this.state.showAlert ? "block" : "none" }}>The tweet can't contain more than 140 chars.</Alert>
+                                    <Button type="submit" color="primary" disabled={this.state.buttonDisabled} className={styles.tweetFormButton}>Tweet</Button>
                                 </div>
                             </FormGroup>
                         </Form>

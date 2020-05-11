@@ -8,10 +8,10 @@ function ListOfTweets() {
         <AppContext.Consumer>
             {appContext => (
                 <div>
-                    {appContext.tweets.map((el, index) => <div className={styles.tweetsListWrapper}>
+                    {appContext.tweets.sort((a, b) => b.date > a.date ? 1 : -1).map((el, index) => <div className={styles.tweetsListWrapper}>
                         <div key={index} className="p-3 my-2 rounded bg-dark" style={{ width: "50%" }}>
                             <Toast>
-                                <ToastHeader style={{ color: 'gray', textAlign: 'right', position: 'relative' }}>
+                                <ToastHeader className={styles.toastHeader}>
                                     <span className={styles.tweetName}>
                                         {el.userName}
                                     </span>
@@ -19,7 +19,7 @@ function ListOfTweets() {
                                         {el.date}
                                     </span>
                                 </ToastHeader>
-                                <ToastBody style={{ color: 'white', textAlign: 'left', marginTop: '20px' }}>
+                                <ToastBody className={styles.toastBody}>
                                     {el.content}
                                 </ToastBody>
                             </Toast>
