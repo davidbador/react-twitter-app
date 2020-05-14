@@ -12,5 +12,21 @@ const config = {
 }
 
 firebase.initializeApp(config);
+export const auth = firebase.auth()
 
-export default firebase;
+const storage = firebase.storage();
+const provider = new firebase.auth.GoogleAuthProvider()
+export function signInWithGoogle() {
+    auth.signInWithPopup(provider).then(cred => {
+        return firebase.firestore().collection('users').doc(cred.user.uid).set({
+            uid: cred.user.uid,
+            userName: cred.user.displayName,
+            email: cred.user.email,
+            photo: cred.user.photoURL,
+        })
+    })
+}
+
+export {
+    storage, firebase as default
+}

@@ -9,7 +9,7 @@ export async function sendTweetFirestore(msg, cbTurnOffSpinner, cbDisplayError) 
     let response = await db.collection("tweets").add(msg)
     try {
         cbTurnOffSpinner()
-        return response
+        return setTimeout(() => response, 2000)
     } catch (error) {
         return cbDisplayError(error)
     }

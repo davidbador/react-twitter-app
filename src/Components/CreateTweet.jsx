@@ -1,100 +1,102 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import { Button, Input, FormGroup, Form, Alert } from 'reactstrap';
 import { Modal } from 'react-bootstrap';
 import '../App.css';
 import styles from './CreateTweet.module.css';
 import AppContext from '../AppContext';
 import LoadingIndicator from './LoadingIndicator';
-import { sendTweetFirestore } from '../lib/FirestoreConnection'
+import { sendTweetFirestore } from '../lib/FirestoreConnection';
+import firebase from '../Firestore';
 
-class CreateTweet extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            value: '',
-            showAlert: false,
-            buttonDisabled: false,
-            showLoading: false,
-            showModal: false,
-            modalText: '',
-        }
-        this.button = React.createRef();
-        this.updateText = this.updateText.bind(this);
-        this.handleModalShow = this.handleModalShow.bind(this);
-        this.handleModalClose = this.handleModalClose.bind(this);
-        this.turnOffLoader = this.turnOffLoader.bind(this);
-        this.displayError = this.displayError.bind(this);
+const CreateTweet = () => {
+    const [message, updateText] = useState('');
+    const [buttonDisabled, updateButton] = useState(false);
+    const [showAlert, updateAlert] = useState(false);
+    const [showLoading, updateLoading] = useState(false);
+    const [showModal, updateModal] = useState(false);
+    const [modalText, updateModalText] = useState('');
+    const [name, updateName] = useState('');
+
+    useEffect(() => {
+        getName()
+    })
+
+    const context = useContext(AppContext);
+
+    const handleModalShow = (error) => {
+        updateModal(true);
+        updateModalText(error);
     }
 
-    static contextType = AppContext;
-    updateText = (event) => {
-        if (event.target.value.length <= 140) {
-            this.setState({ buttonDisabled: false, showAlert: false })
-        } else {
-            this.setState({ buttonDisabled: true, showAlert: true });
-        }
-        this.setState({ value: event.target.value })
+    const handleModalClose = () => {
+        updateModal(false)
     }
 
-    handleModalShow = (error) => {
-        this.setState({ showModal: true, modalText: error });
+    const turnOffLoader = () => {
+        setTimeout(() => updateLoading(false), 1000)
     }
 
-    handleModalClose = () => {
-        this.setState({ showModal: false });
+    const displayError = (error) => {
+        handleModalShow(error)
     }
 
-    turnOffLoader = () => {
-        setTimeout(() => this.setState({ showLoading: false }), 1000)
+    const getName = () => {
+        firebase.firestore().collection('users').doc(context.user.uid).get().then((doc) => {
+            updateName(doc.data().userName)
+        })
     }
 
-    displayError = (error) => {
-        this.handleModalShow(error)
-    }
-
-    handleOnSubmit = async (event, fc) => {
+    const handleOnSubmit = async (event, fc) => {
         event.preventDefault();
-        const { value } = this.state;
-        const userRef = sendTweetFirestore({
-            content: value,
-            userName: this.context.userName,
+        const userRef = await sendTweetFirestore({
+            userName: name,
+            uid: context.user.uid,
+            content: message,
             date: new Date().toISOString()
-        }, this.turnOffLoader, this.displayError)
-        this.setState({ showLoading: true, value: '' });
+        }, turnOffLoader, displayError)
+        updateLoading(true);
+        updateText('');
         setTimeout(() => fc(userRef), 1000)
     }
-
-    render() {
-        return (
-            <AppContext.Consumer>
-                {appContext => (
-                    <div>
-                        <Form onSubmit={(event) => this.handleOnSubmit(event, appContext.handleOnTweetSubmit)}>
-                            <FormGroup className={styles.tweetFormGroup}>
-                                <div className={styles.tweetForm}>
-                                    <Input type="textarea" name="text" id="tweetTextArea" value={this.state.value} className={styles.tweetFormInput} placeholder="What do you have in mind..." onChange={this.updateText} />
-                                    <Modal show={this.state.showModal} onHide={this.handleModalClose} animation={false}>
-                                        <Modal.Header closeButton>
-                                            <Modal.Title>ERROR!</Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>{this.state.modalText}</Modal.Body>
-                                        <Modal.Footer>
-                                            <Button variant="primary" onClick={this.handleModalClose}>
-                                                Close
-                                            </Button>
-                                        </Modal.Footer>
-                                    </Modal>
-                                    <Alert color="danger" className={styles.tweetFormAlert} style={{ display: this.state.showAlert ? "block" : "none" }}>The tweet can't contain more than 140 chars.</Alert>
-                                    <Button type="submit" color="primary" disabled={this.state.buttonDisabled} className={styles.tweetFormButton}>Tweet</Button>
-                                </div>
-                            </FormGroup>
-                        </Form>
-                        <LoadingIndicator showLoading={this.state.showLoading} />
-                    </div>
-                )}
-            </AppContext.Consumer>
-        )
-    }
+    return (
+        <AppContext.Consumer>
+            {appContext => (
+                <div>
+                    <Form onSubmit={(event) => handleOnSubmit(event, appContext.handleOnTweetSubmit)}>
+                        <FormGroup className={styles.tweetFormGroup}>
+                            <div className={styles.tweetForm}>
+                                <Input type="textarea" name="text" id="tweetTextArea" value={message} className={styles.tweetFormInput} placeholder="What do you have in mind..." onChange={event => {
+                                    if (event.target.value.length <= 140) {
+                                        updateText(event.target.value)
+                                        updateButton(false)
+                                        updateAlert(false)
+                                    } else {
+                                        updateText(event.target.value)
+                                        updateButton(true)
+                                        updateAlert(true)
+                                    }
+                                }} />
+                                <Modal show={showModal} onHide={handleModalClose} animation={false}>
+                                    <Modal.Header closeButton>
+                                        <Modal.Title>ERROR!</Modal.Title>
+                                    </Modal.Header>
+                                    <Modal.Body>{modalText}</Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="primary" onClick={handleModalClose}>
+                                            Close
+                                        </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                                <Alert color="danger" className={styles.tweetFormAlert} style={{ display: showAlert ? "block" : "none" }}>The tweet can't contain more than 140 chars.</Alert>
+                                <Button type="submit" color="primary" disabled={buttonDisabled} className={styles.tweetFormButton}>Tweet</Button>
+                            </div>
+                        </FormGroup>
+                    </Form>
+                    <LoadingIndicator showLoading={showLoading} />
+                </div>
+            )}
+        </AppContext.Consumer>
+    )
 }
 
 export default CreateTweet

@@ -1,7 +1,8 @@
 import React from 'react';
 
 const AppContext = React.createContext({
-    userName: 'David',
+    user: {},
+    userName: '',
     tweets: [],
     currentUserName: (newName) => { },
     handleOnTweetSubmit: (value) => { }
