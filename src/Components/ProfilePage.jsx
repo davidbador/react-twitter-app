@@ -97,9 +97,9 @@ const ProfilePage = () => {
                     </Form>
                     <Form onSubmit={handleUpload}>
                         <FormGroup>
-                            <div>Upload Profile Picture</div>
+                            <div className={styles.uploadTitle}>Upload Profile Picture</div>
                             <Input type="file" onChange={handleFileChange} />
-                            <Button color="primary">Upload</Button>
+                            <Button className={styles.uploadImageButton} color="primary">Upload</Button>
                         </FormGroup>
                     </Form>
                     <img src={url} alt="profile" style={{ width: '300px', height: '400px' }} />

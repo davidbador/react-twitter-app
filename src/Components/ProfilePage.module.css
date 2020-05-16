@@ -31,3 +31,13 @@
   position: absolute;
   right: 0;
 }
+
+.uploadTitle {
+  margin-top: 20%;
+  margin-bottom: 10%;
+}
+
+.uploadImageButton {
+  margin-top: 10%;
+  margin-bottom: 10%;
+}

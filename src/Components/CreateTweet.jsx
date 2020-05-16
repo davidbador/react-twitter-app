@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useContext } from 'react';
 import { Button, Input, FormGroup, Form, Alert } from 'reactstrap';
 import { Modal } from 'react-bootstrap';
 import '../App.css';
@@ -15,11 +15,6 @@ const CreateTweet = () => {
     const [showLoading, updateLoading] = useState(false);
     const [showModal, updateModal] = useState(false);
     const [modalText, updateModalText] = useState('');
-    const [name, updateName] = useState('');
-
-    useEffect(() => {
-        getName()
-    })
 
     const context = useContext(AppContext);
 
@@ -40,16 +35,9 @@ const CreateTweet = () => {
         handleModalShow(error)
     }
 
-    const getName = () => {
-        firebase.firestore().collection('users').doc(context.user.uid).get().then((doc) => {
-            updateName(doc.data().userName)
-        })
-    }
-
     const handleOnSubmit = async (event, fc) => {
         event.preventDefault();
         const userRef = await sendTweetFirestore({
-            userName: name,
             uid: context.user.uid,
             content: message,
             date: new Date().toISOString()

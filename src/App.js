@@ -49,8 +49,8 @@ class App extends React.Component {
     })
   }
 
-  loadTweets = async () => {
-    this.unsubscribe = firebase.firestore().collection('tweets').onSnapshot(snapshot => {
+  loadTweets = () => {
+    firebase.firestore().collection('tweets').onSnapshot(snapshot => {
       const data = snapshot.docs.map(doc => doc.data());
       this.setState(
         {
