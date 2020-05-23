@@ -6,7 +6,6 @@ import styles from './CreateTweet.module.css';
 import AppContext from '../AppContext';
 import LoadingIndicator from './LoadingIndicator';
 import { sendTweetFirestore } from '../lib/FirestoreConnection';
-import firebase from '../Firestore';
 
 const CreateTweet = () => {
     const [message, updateText] = useState('');

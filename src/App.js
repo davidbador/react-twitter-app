@@ -38,11 +38,7 @@ class App extends React.Component {
     })
     this.loadTweets();
   }
-
-  componentWillUnmount() {
-    this.unsubscribe()
-  }
-
+  
   authListener() {
     firebase.auth().onAuthStateChanged((user) => {
       user ? (this.setState({ user })) : (this.setState({ user: null }))
@@ -50,14 +46,14 @@ class App extends React.Component {
   }
 
   loadTweets = () => {
-    firebase.firestore().collection('tweets').onSnapshot(snapshot => {
-      const data = snapshot.docs.map(doc => doc.data());
-      this.setState(
-        {
-          tweets: data
-        }
-      )
+    this.unsubscribe = firebase.firestore().collection('tweets').onSnapshot(snapshot => {
+      const tweets = snapshot.docs.map(doc => doc.data());
+      this.setState({ tweets })
     })
+  }
+
+  componentWillUnmount = () => {
+    this.unsubscribe()
   }
 
   render() {
